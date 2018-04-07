@@ -3,6 +3,7 @@
 import sys, getopt
 import os
 import smtplib
+
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
@@ -10,8 +11,11 @@ def main(argv):
     smtp_srv_name = ''
     smtp_srv_port = ''
     username = ''
+    to_address = ''
+    subject = ''
+    body = ''
     try:
-        opts, args = getopt.getopt(argv,"s:p:u:",["smtp-srv=","smtp-port=", "username=", "help"])
+        opts, args = getopt.getopt(argv,"s:p:u:T:S:B:",["smtp-srv=","smtp-port=", "username=", "to-address=", "subject=", "body=", "help"])
     except getopt.GetoptError:
         print 'Wrong parameters'
         sys.exit(2)
@@ -25,9 +29,18 @@ def main(argv):
             smtp_srv_port = int(arg)
         elif opt in ("-u", "--username"):
             username = arg
+        elif opt in ("-T", "--to-address"):
+            to_address = arg
+        elif opt in ("-S", "--subject"):
+            subject = arg
+        elif opt in ("-B", "--body"):
+            body = arg
     print('SMTP Server name: ' + smtp_srv_name)
     print('SMTP Server port: ' + str(smtp_srv_port))
     print('Username: ' + username)
+    print('Writing to: ' + to_address)
+    print('Subject: ' + subject)
+    print('Body:\n' + body)
     srv_conf = (smtp_srv_name, smtp_srv_port)
     user_credentials = (username, getPassword())
     sendMail(srv_conf, user_credentials, "matthias.hermann@iteratec.de", "Hi")
