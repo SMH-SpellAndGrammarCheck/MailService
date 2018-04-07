@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# Taken from https://gist.github.com/bradmontgomery/2219997#file-dummy-web-server-py
 """
 Very simple HTTP server in python.
 
