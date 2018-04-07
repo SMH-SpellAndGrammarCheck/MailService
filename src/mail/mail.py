@@ -10,6 +10,25 @@ from email.mime.multipart import MIMEMultipart
 
 import ConfigParser
 
+help = """
+-s, --smtp-srv:     Domain name of the SMTP server used for sending an email
+
+-p, --smpt-port:    Port number on which to connect to the SMTP server
+
+-u, --username:     Email address to be used for sending an email. This address
+                    has to be registered on the specified SMTP server
+
+-T, --to-address:   Email address of the recipient
+
+-S, --subject:      Subject of the email to be sent
+
+-B, --body          Body content of the email to be sent
+
+-f, --file          Fully qualified path to a file on the filesystem. The file
+                    will be attached to the email to be sent. This parameter may
+                    be used multiple times in order to attach multiple files.
+"""
+
 def main(argv):
     smtp_srv_name = ''
     smtp_srv_port = ''
@@ -19,13 +38,14 @@ def main(argv):
     body = ''
     filenames = []
     try:
-        opts, args = getopt.getopt(argv,"s:p:u:T:S:B:f:",["smtp-srv=","smtp-port=", "username=", "to-address=", "subject=", "body=", "file=", "help"])
+        opts, args = getopt.getopt(argv,"s:p:u:T:S:B:f:h",["smtp-srv=","smtp-port=", "username=", "to-address=", "subject=", "body=", "file=", "help"])
     except getopt.GetoptError:
-        print 'Wrong parameters'
+        print('Wrong parameters!')
+        print(help)
         sys.exit(2)
     for opt, arg in opts:
-        if opt == '--help':
-            print 'test.py -i <inputfile> -o <outputfile>'
+        if opt in ("-h", "--help"):
+            print(help)
             sys.exit()
         elif opt in ("-s", "--smtp-srv"):
             smtp_srv_name = arg
