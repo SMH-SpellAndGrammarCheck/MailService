@@ -7,6 +7,8 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
+import ConfigParser
+
 def main(argv):
     smtp_srv_name = ''
     smtp_srv_port = ''
@@ -41,9 +43,16 @@ def main(argv):
     print('Writing to: ' + to_address)
     print('Subject: ' + subject)
     print('Body:\n' + body)
-    srv_conf = (smtp_srv_name, smtp_srv_port)
+    srv_conf = readServerConf()
     user_credentials = (username, getPassword())
     sendMail(srv_conf, user_credentials, "matthias.hermann@iteratec.de", "Hi")
+
+def readServerConf():
+    cfgParser = ConfigParser.ConfigParser()
+    cfgParser.read('./res/connection.cfg')
+    smtp_srv_name = cfgParser.get('DEFAULT', 'smtp_srv_name')
+    smtp_srv_port = cfgParser.get('DEFAULT', 'smtp_srv_port')
+    return (smtp_srv_name, smtp_srv_port)
 
 def getPassword():
     if 'SMTP_PASSWORD' in os.environ:
