@@ -70,7 +70,7 @@ def createMessage(to_address, from_address, subject, body):
     msg['From'] = from_address
     msg['To'] = to_address
     msg['Subject'] = subject
-    msg.attach(MIMEText(body, 'plain'))
+    msg.attach(MIMEText(body, 'plain', 'utf-8'))
     return msg
 
 def sendMail(srv_conf, credentials, to_address, message):
