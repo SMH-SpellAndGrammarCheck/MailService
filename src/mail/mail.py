@@ -47,12 +47,13 @@ def main(argv):
     user_credentials = (username, getPassword())
     sendMail(srv_conf, user_credentials, "matthias.hermann@iteratec.de", "Hi")
 
-def readServerConf():
+def readConnectionConf():
     cfgParser = ConfigParser.ConfigParser()
     cfgParser.read('./res/connection.cfg')
     smtp_srv_name = cfgParser.get('DEFAULT', 'smtp_srv_name')
     smtp_srv_port = cfgParser.get('DEFAULT', 'smtp_srv_port')
-    return (smtp_srv_name, smtp_srv_port)
+    username = cfgParser.get('USER', 'username')
+    return (smtp_srv_name, smtp_srv_port, username)
 
 def getPassword():
     if 'SMTP_PASSWORD' in os.environ:
