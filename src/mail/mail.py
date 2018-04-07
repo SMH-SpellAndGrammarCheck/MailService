@@ -43,9 +43,11 @@ def main(argv):
     print('Writing to: ' + to_address)
     print('Subject: ' + subject)
     print('Body:\n' + body)
-    srv_conf = readServerConf()
-    user_credentials = (username, getPassword())
-    sendMail(srv_conf, user_credentials, "matthias.hermann@iteratec.de", "Hi")
+    connection_cfg = readConnectionConf()
+    srv_cfg = connection_cfg[0:1]
+    user_credentials = (connection_cfg[2], getPassword())
+    message = createMessage(to_address, user_credentials[0], subject, body)
+    sendMail(srv_conf, user_credentials, to_address, message.as_string())
 
 def readConnectionConf():
     cfgParser = ConfigParser.ConfigParser()
