@@ -19,12 +19,14 @@ def main(argv):
         elif opt in ("-s", "--smtp-srv"):
             smtp_srv_name = arg
         elif opt in ("-p", "--smtp-port"):
-            smtp_srv_port = arg
+            smtp_srv_port = int(arg)
         elif opt in ("-u", "--username"):
             username = arg
     print('SMTP Server name: ' + smtp_srv_name)
-    print('SMTP Server port: ' + smtp_srv_port)
+    print('SMTP Server port: ' + str(smtp_srv_port))
     print('Username: ' + username)
+    srv_conf = (smtp_srv_name, smtp_srv_port)
+    user_credentials = (username, getPassword())
 
 def getPassword():
     if 'SMTP_PASSWORD' in os.environ:
