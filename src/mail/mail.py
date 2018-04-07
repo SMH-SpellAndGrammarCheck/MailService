@@ -3,6 +3,8 @@
 import sys, getopt
 import os
 import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 def main(argv):
     smtp_srv_name = ''
@@ -35,6 +37,14 @@ def getPassword():
         return os.environ['SMTP_PASSWORD']
     else:
         return ''
+
+def createMessage(to_address, from_address, subject, body):
+    msg = MIMEMultipart()
+    msg['From'] = from_address
+    msg['To'] = to_address
+    msg['Subject'] = subject
+    msg.attach(MIMEText(body, 'plain'))
+    return msg
 
 def sendMail(srv_conf, credentials, to_address, message):
     print("Creating SMTP object...")
