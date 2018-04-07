@@ -43,11 +43,13 @@ def main(argv):
     print('Writing to: ' + to_address)
     print('Subject: ' + subject)
     print('Body:\n' + body)
+
     connection_cfg = readConnectionConf()
-    srv_cfg = connection_cfg[0:1]
+    srv_cfg = connection_cfg[0:2]
     user_credentials = (connection_cfg[2], getPassword())
     message = createMessage(to_address, user_credentials[0], subject, body)
-    sendMail(srv_conf, user_credentials, to_address, message.as_string())
+
+    sendMail(srv_cfg, user_credentials, to_address, message.as_string())
 
 def readConnectionConf():
     cfgParser = ConfigParser.ConfigParser()
@@ -84,9 +86,8 @@ def sendMail(srv_conf, credentials, to_address, message):
     server.login(credentials[0], credentials[1])
 
     #Send the mail
-    msg = "\nHello!" # The /n separates the message from the headers
     print("Sending mail...")
-    server.sendmail(credentials[0], to_address, msg)
+    server.sendmail(credentials[0], to_address, message)
 
     print("Quitting...")
     server.quit()
