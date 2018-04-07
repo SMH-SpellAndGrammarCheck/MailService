@@ -17,8 +17,9 @@ def main(argv):
     to_address = ''
     subject = ''
     body = ''
+    filenames = []
     try:
-        opts, args = getopt.getopt(argv,"s:p:u:T:S:B:",["smtp-srv=","smtp-port=", "username=", "to-address=", "subject=", "body=", "help"])
+        opts, args = getopt.getopt(argv,"s:p:u:T:S:B:f:",["smtp-srv=","smtp-port=", "username=", "to-address=", "subject=", "body=", "file=", "help"])
     except getopt.GetoptError:
         print 'Wrong parameters'
         sys.exit(2)
@@ -38,6 +39,8 @@ def main(argv):
             subject = arg
         elif opt in ("-B", "--body"):
             body = arg
+        elif opt in ("-f", "--file"):
+            filenames.append(arg)
     print('SMTP Server name: ' + smtp_srv_name)
     print('SMTP Server port: ' + str(smtp_srv_port))
     print('Username: ' + username)
@@ -50,6 +53,7 @@ def main(argv):
     user_credentials = (connection_cfg[2], getPassword())
     message = createMessage(to_address, user_credentials[0], subject, body)
 
+    attachFiles(message, filenames)
     sendMail(srv_cfg, user_credentials, to_address, message.as_string())
 
 def readConnectionConf():
@@ -73,6 +77,10 @@ def createMessage(to_address, from_address, subject, body):
     msg['Subject'] = subject
     msg.attach(MIMEText(body, 'plain', 'utf-8'))
     return msg
+
+def attachFiles(message, filenames):
+    for filename in filenames:
+        attachFile(message, filename)
 
 def attachFile(message, filename):
     attachment = None
