@@ -2,6 +2,7 @@
 
 import sys, getopt
 import os
+import smtplib
 
 def main(argv):
     smtp_srv_name = ''
@@ -27,12 +28,33 @@ def main(argv):
     print('Username: ' + username)
     srv_conf = (smtp_srv_name, smtp_srv_port)
     user_credentials = (username, getPassword())
+    sendMail(srv_conf, user_credentials, "matthias.hermann@iteratec.de", "Hi")
 
 def getPassword():
     if 'SMTP_PASSWORD' in os.environ:
         return os.environ['SMTP_PASSWORD']
     else:
         return ''
+
+def sendMail(srv_conf, credentials, to_address, message):
+    print("Creating SMTP object...")
+    server = smtplib.SMTP(srv_conf[0], srv_conf[1])
+
+    server.ehlo()
+    server.starttls()
+    server.ehlo()
+
+    #Next, log in to the server
+    print("Logging in...")
+    server.login(credentials[0], credentials[1])
+
+    #Send the mail
+    msg = "\nHello!" # The /n separates the message from the headers
+    print("Sending mail...")
+    server.sendmail(credentials[0], to_address, msg)
+
+    print("Quitting...")
+    server.quit()
 
 if __name__ == "__main__":
     main(sys.argv[1:])
