@@ -5,6 +5,7 @@ import os
 import smtplib
 
 from email.mime.text import MIMEText
+from email.mime.application import MIMEApplication
 from email.mime.multipart import MIMEMultipart
 
 import ConfigParser
@@ -72,6 +73,15 @@ def createMessage(to_address, from_address, subject, body):
     msg['Subject'] = subject
     msg.attach(MIMEText(body, 'plain', 'utf-8'))
     return msg
+
+def attachFile(message, filename):
+    attachment = None
+    file_basename = os.path.basename(filename)
+    with open(filename, 'rb') as f:
+        attachment = MIMEApplication(f.read(), Name=file_basename)
+    attachment['Content-Disposition'] = 'attachment; filename="%s"' % file_basename
+    message.attach(attachment)
+    return message
 
 def sendMail(srv_conf, credentials, to_address, message):
     print("Creating SMTP object...")
