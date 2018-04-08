@@ -38,11 +38,12 @@ class S(BaseHTTPRequestHandler):
         self._set_headers()
 
     def do_POST(self):
-        # Doesn't do anything with posted data
-        content_length = int(self.headers['Content-Length']) # <--- Gets the size of data
-        post_data = self.rfile.read(content_length) # <--- Gets the data itself
+        content_length = int(self.headers['Content-Length'])
+        post_data = self.rfile.read(content_length)
+        email_address = self.headers['email']
         self._set_headers()
-        self.wfile.write("<html><body><h1>POST!</h1></body></html>")
+        self.wfile.write("Sending to email " + email_address + " content: \n" + post_data)
+        self.sendEmail(email_address, post_data)
 
     def sendEmail(email_address, content):
         subject = 'Your spelling and grammar check is finished'
