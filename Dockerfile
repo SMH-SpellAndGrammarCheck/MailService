@@ -1,15 +1,8 @@
-FROM centos:latest
+FROM python:2
 
-RUN yum update
-
-RUN yum -y install sendmail
-
-ADD setSendmailFQDN.sh /opt/setSendmailFQDN.sh
-
-ADD startSendmailService.sh /opt/startSendmailService.sh
-
-ADD src/http /srv/http
+ADD src/ /srv/py/src
+ADD res/ /srv/py/res
 
 EXPOSE 8080
 
-CMD /srv/http/http.py 8080
+CMD /srv/py/src/http/http.py 8080
