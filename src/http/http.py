@@ -18,6 +18,7 @@ Send a POST request::
 """
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 import SocketServer
+from subprocess import call
 
 class S(BaseHTTPRequestHandler):
     def _set_headers(self):
@@ -38,6 +39,14 @@ class S(BaseHTTPRequestHandler):
         post_data = self.rfile.read(content_length) # <--- Gets the data itself
         self._set_headers()
         self.wfile.write("<html><body><h1>POST!</h1></body></html>")
+
+    def sendEmail(email_address, content):
+        subject = 'Your spelling and grammar check is finished'
+        call(['../mail/mail.py',
+            '-T', email_address,
+            '-B', content,
+            '-S', subject
+        ])
 
 def run(server_class=HTTPServer, handler_class=S, port=80):
     server_address = ('', port)
