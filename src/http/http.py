@@ -45,9 +45,10 @@ class S(BaseHTTPRequestHandler):
         self.wfile.write("Sending to email " + email_address + " content: \n" + post_data)
         self.sendEmail(email_address, post_data)
 
-    def sendEmail(email_address, content):
+    def sendEmail(self, email_address, content):
         subject = 'Your spelling and grammar check is finished'
-        call(['../mail/mail.py',
+        #Assuming working directory is project root
+        call(['src/mail/mail.py',
             '-T', email_address,
             '-B', content,
             '-S', subject
