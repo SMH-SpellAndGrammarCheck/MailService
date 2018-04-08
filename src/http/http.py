@@ -29,10 +29,10 @@ class S(BaseHTTPRequestHandler):
     def do_GET(self):
         self._set_headers()
         doc = "When issuing a POST request, add a header 'email' containing the "
-            + "email address to which the message should be send. The message "
-            + "content is read from the POST data."
+        + "email address to which the message should be send. The message "
+        + "content is read from the POST data."
         self.wfile.write("<html><body><h1>Please issue a POST request!</h1>"
-            + doc + "</body></html>")
+        + doc + "</body></html>")
 
     def do_HEAD(self):
         self._set_headers()
